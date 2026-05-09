@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Popular Cycles – Kottarakara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Your Custom Palette */
+    --clr-bg: #f4f1ec;
+    --clr-light-blue: #9bacd8;
+    --clr-accent: #f98513;
+    --clr-muted: #dad1cb;
+    --clr-dark-blue: #223382;
+    --clr-deep-blue: #111144;
+    
+    /* Functional Mapping */
+    --bg: var(--clr-bg);
+    --bg2: #ffffff;
+    --bg3: var(--clr-muted);
+    --accent: var(--clr-accent);
+    --accent2: var(--clr-dark-blue);
+    --text: var(--clr-deep-blue);
+    --muted: #555e7d; /* Slightly darkened for legibility on light bg */
+    --card: #ffffff;
+    --border: rgba(34, 51, 130, 0.15);
+    --radius: 14px;
+    --wa: #25D366;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+    body {
+    background: linear-gradient(
+        135deg,
+        #ffedd8 0%,
+        #ffd4a8 35%,
+        #ffc27a 70%,
+        #ffb25c 100%
+    );
+
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: default;
+    }
+
+  /* ── NOISE overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 64px;
+    background: rgba(255,255,255,0.75);
+   backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+    color: var(--clr-dark-blue);
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links {
+    display: flex; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--clr-deep-blue);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-wa {
+    display: flex; align-items: center; gap: .5rem;
+    background: #ffb25c;
+    color: #fff;
+    font-weight: 600;
+    font-size: .82rem;
+    padding: .45rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    letter-spacing: .04em;
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .nav-wa:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 170, 0, 0.35); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; background: var(--clr-bg); padding: 1.5rem 5vw; border-bottom: 1px solid var(--border); gap: 1.25rem; z-index: 99; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .nav-wa { font-size: .75rem; padding: .4rem .8rem; }
+  }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 5vw 60px;
+    overflow: hidden;
+    background: radial-gradient(circle at top right, var(--clr-light-blue), transparent 60%);
+  }
+  .hero-bg-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    animation: spin 40s linear infinite;
+  }
+  .hero-bg-ring:nth-child(1) { width: 600px; height: 600px; top: -150px; right: -180px; }
+  .hero-bg-ring:nth-child(2) { width: 400px; height: 400px; top: -50px; right: -80px; border-color: rgba(249, 133, 19, 0.12); animation-duration: 28s; animation-direction: reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(34, 51, 130, 0.08);
+    border: 1px solid rgba(34, 51, 130, 0.2);
+    color: var(--clr-dark-blue);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .35rem .9rem;
+    border-radius: 50px;
+    width: fit-content;
+    margin-bottom: 1.5rem;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-badge::before { content: '●'; font-size: .5rem; color: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: .9;
+    letter-spacing: 1px;
+    color: var(--clr-deep-blue);
+    animation: fadeUp .7s .1s ease both;
+  }
+  .hero-title .yellow { color: var(--accent); }
+  .hero-title .outline {
+    -webkit-text-stroke: 1px var(--clr-dark-blue);
+    color: transparent;
+    opacity: 0.7;
+  }
+
+/* ── HERO IMAGE STYLING (FIXED) ── */
+.hero-image-container {
+  position: absolute;
+  top: 5%;
+  right: 3vw;
+  transform: translateY(-50%);
+  
+  width: 52%;
+  max-width: 780px;
+
+  z-index: 1;
+  pointer-events: none;
+
+  animation: bikeFadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-cycle {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+}
+
+.hero-title, .hero-sub, .hero-ctas, .hero-stats {
+  max-width: 550px; /* Forces text to stay on the left half */
+  position: relative;
+  z-index: 10;      /* Keeps text clickable above the image */
+}
+
+.hero-sub {
+  margin-top: 2rem; /* More space between title and description */
+}
+
+/* Ensure text and buttons stay on top of the image */
+.hero-badge, .hero-title, .hero-sub, .hero-ctas, .hero-stats {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes bikeFadeIn {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+  /* ── HERO RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-image-container {
+      position: relative;
+      right: 0;
+      top: auto;
+      transform: none;
+      width: 80%;
+      max-width: 420px;
+      margin: 2rem auto 0;
+      order: 2;
+    }
+
+    #hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 96px;
+      min-height: 100svh;
+      height: auto;
+      justify-content: flex-start;
+    }
+
+    .hero-badge, .hero-sub, .hero-ctas, .hero-stats {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    .hero-title {
+      max-width: 100%;
+    }
+
+    .hero-stats {
+      gap: 2rem;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 600px) {
+    /* Hide hero bike image on mobile */
+    .hero-image-container {
+      display: none;
+    }
+
+    #hero {
+      padding: 80px 5vw 50px;
+      text-align: center;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 16vw, 5rem);
+      max-width: 100%;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      max-width: 100%;
+      margin-top: 1rem;
+    }
+
+    .hero-ctas {
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
+      margin-top: 1.75rem;
+      width: 100%;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .hero-stats {
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+    }
+
+    .stat-val {
+      font-size: 2rem;
+    }
+
+    .hero-badge {
+      font-size: .72rem;
+    }
+
+    section {
+      padding: 60px 5vw;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .card-top {
+      height: 150px;
+    }
+
+    .card-content {
+      padding: 1rem;
+      gap: .5rem;
+    }
+
+    .card-name {
+      font-size: 1rem;
+    }
+
+    .cat-tabs {
+      gap: .4rem;
+    }
+
+    .cat-tab {
+      padding: .4rem .9rem;
+      font-size: .78rem;
+    }
+
+    .why-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 5vw;
+      gap: .75rem;
+    }
+
+    .brand-carousel {
+      margin-top: 2.5rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+
+
+    .why-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  .hero-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--clr-dark-blue);
+    max-width: 420px;
+    margin-top: 1.2rem;
+    line-height: 1.6;
+    animation: fadeUp .7s .2s ease both;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-top: 2.5rem;
+    animation: fadeUp .7s .35s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--clr-dark-blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+    padding: .75rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    letter-spacing: .03em;
+  }
+  .btn-primary:hover { transform: translateY(-2px); background: var(--clr-deep-blue); box-shadow: 0 10px 30px rgba(17, 17, 68, 0.2); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: transparent;
+    border: 1px solid var(--clr-dark-blue);
+    color: var(--clr-dark-blue);
+    font-size: .9rem;
+    padding: .75rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .btn-secondary:hover { background: var(--clr-dark-blue); color: white; }
+
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp .7s .5s ease both;
+  }
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--clr-dark-blue);
+    line-height: 1;
+  }
+  .stat-lbl { font-size: .78rem; color: var(--clr-dark-blue); opacity: 0.7; text-transform: uppercase; letter-spacing: .08em; margin-top: .2rem; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 90px 5vw; position: relative; z-index: 1; }
+  .section-label {
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: .6rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1;
+    color: var(--clr-deep-blue);
+    margin-bottom: .6rem;
+  }
+  .section-desc {
+    color: var(--muted);
+    max-width: 480px;
+    font-size: .95rem;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .cat-tabs {
+    display: flex; gap: .6rem; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .cat-tab {
+    padding: .5rem 1.3rem;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--clr-dark-blue);
+    cursor: pointer;
+    transition: all .22s;
+    background: white;
+    letter-spacing: .04em;
+  }
+  .cat-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-tab.active { background: var(--clr-dark-blue); color: #fff; border-color: var(--clr-dark-blue); font-weight: 700; }
+
+  /* ── PRODUCT GRID ── */
+  .product-section { display: none; }
+  .product-section.visible { display: block; animation: fadeIn .4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .subsection-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--clr-dark-blue);
+    margin-bottom: 1.2rem;
+    margin-top: 2.5rem;
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .subsection-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+/* ── UPDATED PRODUCT CARD (Image Style) ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Slightly wider for the new layout */
+    gap: 2rem;
+  }
+
+  .product-card {
+    background: #ffffff;
+    border-radius: 24px; /* Larger radius like the image */
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Align text to left like the shoe card */
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(17, 17, 68, 0.12);
+  }
+
+  /* Top Gradient Section */
+  .card-top {
+    position: relative;
+    height: 200px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .fav-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    backdrop-filter: blur(5px);
+  }
+
+.card-top .card-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px; /* Gives the car some breathing room */
+}
+
+
+.card-top .card-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures the whole car is visible without clipping */
+    /* REMOVE the transform: rotate property if you had it */
+    transform: none; 
+    /* This trick helps white-background images blend into gradients */
+    mix-blend-mode: normal; 
+    
+}
+
+/* Ensure the top section doesn't cut off shadows */
+.card-top {
+    overflow: visible; 
+}
+
+
+  /* Bottom Content Section */
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .card-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--clr-deep-blue);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card-badges {
+    display: flex;
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    text-transform: uppercase;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 5px 0;
+  }
+
+  /* Footer Layout (Price + Button) */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 15px;
+  }
+
+  .card-price-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #aaa;
+    letter-spacing: 1px;
+  }
+
+  .price-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--clr-deep-blue);
+  }
+
+  .card-wa-btn {
+    background: var(--clr-dark-blue); /* Using your theme color for the button */
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .card-wa-btn:hover {
+    background: var(--accent2);
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 600px) {
+    .card-desc { display: none; }
+  }
+  /* ── WHY US ── */
+  #why { background: #ffcf94; }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 280px));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+    justify-content: center;
+  }
+  .why-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.4rem;
+    transition: transform .25s;
+  }
+  .why-card:hover { transform: translateY(-4px); }
+  .why-icon { font-size: 2rem; margin-bottom: .8rem; }
+  .why-title { font-weight: 700; font-size: 1rem; color: var(--clr-deep-blue); margin-bottom: .4rem; }
+  .why-body { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+
+
+  /* ── CONTACT ── */
+  #contact { background: #ffb866; }
+  #contact .section-title { color: var(--clr-deep-blue); }
+  #contact .section-desc { color: var(--clr-deep-blue); opacity: 0.8; }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  
+  .contact-row {
+    display: flex; align-items: center; gap: .75rem;
+    margin-bottom: 1rem;
+    font-size: .9rem;
+  }
+  .contact-row .ico {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-row a { color: var(--clr-deep-blue); text-decoration: none; font-weight: 600; }
+
+  .wa-big {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    flex-direction: column;
+    text-decoration: none;
+    color: #fff;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .wa-big:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(37,211,102,.25); }
+  .wa-big .wa-icon { font-size: 3.5rem; }
+  .wa-big .wa-text { font-size: 1.3rem; font-weight: 700; }
+  .wa-big .wa-sub { font-size: .85rem; opacity: .8; margin-top: .3rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--clr-deep-blue);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 5vw;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 1rem;
+    font-size: .82rem;
+    color: #fff;
+    opacity: 0.9;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  /* ── FLOATING WA ── */
+  .float-wa {
+    position: fixed; bottom: 24px; right: 24px; z-index: 200;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: var(--wa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 6px 24px rgba(37,211,102,.45);
+    text-decoration: none;
+    color: #fff;
+    transition: transform .2s, box-shadow .2s;
+    animation: floatPop .5s 1.2s both;
+  }
+  .float-wa:hover { transform: scale(1.1); box-shadow: 0 10px 36px rgba(37,211,102,.6); }
+  @keyframes floatPop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .55s, transform .55s; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+
+
+
+
+
+
+/* ── BRAND CAROUSEL ── */
+.brand-carousel {
+  margin-top: 5rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 30px 0;
+  /* Soft fade on left and right edges */
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.brand-track {
+  display: flex;
+  width: calc(200px * 20); /* item width * total items (including duplicates) */
+  animation: scroll 40s linear infinite;
+  align-items: center;
+}
+
+.brand-item {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.brand-item img {
+  max-height: 50px;
+  max-width: 140px;
+  width: auto;
+  object-fit: contain;
+  /* Uniform appearance: slightly grey and muted */
+  filter: grayscale(1) opacity(0.6);
+  transition: all 0.3s ease;
+}
+
+.brand-item:hover img {
+  /* Restore color and clarity on hover */
+  filter: grayscale(0) opacity(1);
+  transform: scale(1.1);
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-200px * 10)); } /* Width of half the items */
+}
+
+/* Pause on hover */
+.brand-carousel:hover .brand-track {
+  animation-play-state: paused;
+}
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+  .brand-track {
+    width: calc(150px * 20);
+    animation: scroll-mobile 40s linear infinite;
+  }
+  .brand-item {
+    width: 150px;
+  }
+}
+
+@keyframes scroll-mobile {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-150px * 10)); }
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Popular<span> Cycles</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-wa" href="https://wa.me/919447590267" target="_blank">
+    Contact Us
+  </a>
+  <div class="hamburger" id="ham" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-ring"></div>
+  <div class="hero-bg-ring"></div>
+
+    <div class="hero-image-container">
+    <img src="assests/hero_cycle.png" alt="Bicycle" class="hero-cycle">
+  </div>
+
+  <div class="hero-badge">Kottarakara's & Punalur's Trusted Cycle Store</div>
+  <h1 class="hero-title">
+    EVERY RIDE <br> 
+    <span class="yellow">TELLS A</span><br>
+    <span class="outline">STORY </span>
+  </h1>
+
+  <p class="hero-sub">Toys, electric vehicles, kids' cycles & teenage bikes — Now serving you at our branches in <span style="font-weight: bold;">Kottarakkara</span> and <span style="font-weight: bold;">Punalur</span>.</p>
+  <div class="hero-ctas">
+    <a class="btn-primary" href="#products">
+      <span>Browse Products</span>
+    </a>
+    <a class="btn-secondary" href="https://wa.me/919447590267" target="_blank">
+      Chat With Us
+    </a>
+  </div>
+
+
+  <div class="hero-stats">
+    <div>
+      <div class="stat-val">10+</div>
+      <div class="stat-lbl">Years Serving</div>
+    </div>
+    <div>
+      <div class="stat-val">500+</div>
+      <div class="stat-lbl">Happy Customers</div>
+    </div>
+    <div>
+      <div class="stat-val">50+</div>
+      <div class="stat-lbl">Models Available</div>
+    </div>
+  </div>
+
+
+
+    <div class="brand-carousel">
+        <div class="brand-track">
+        <div class="brand-item"><img src="assests/hero.png" alt="Hero Cycles"></div>
+        <div class="brand-item"><img src="assests/bsa.png" alt="BSA"></div>
+        <div class="brand-item"><img src="assests/hercules.png" alt="Hercules"></div>
+        <div class="brand-item"><img src="assests/avon.png" alt="Avon Cycles"></div>
+        <div class="brand-item"><img src="assests/firefox.png" alt="Firefox"></div>
+        <div class="brand-item"><img src="assests/tata.png" alt="Tata Stryder"></div>
+        <div class="brand-item"><img src="assests/kross.png" alt="Kross Bikes"></div>
+        <div class="brand-item"><img src="assests/atlas.png" alt="Atlas"></div>
+        <div class="brand-item"><img src="assests/montra.png" alt="Montra"></div>        
+        <div class="brand-item"><img src="assests/trek.png" alt="Trek"></div>
+
+        <div class="brand-item"><img src="assests/hero.png" alt="Hero Cycles"></div>
+        <div class="brand-item"><img src="assests/bsa.png" alt="BSA"></div>
+        <div class="brand-item"><img src="assests/hercules.png" alt="Hercules"></div>
+        <div class="brand-item"><img src="assests/avon.png" alt="Avon Cycles"></div>
+        <div class="brand-item"><img src="assests/firefox.png" alt="Firefox"></div>
+        <div class="brand-item"><img src="assests/tata.png" alt="Tata Stryder"></div>
+        <div class="brand-item"><img src="assests/kross.png" alt="Kross Bikes"></div>
+        <div class="brand-item"><img src="assests/atlas.png" alt="Atlas"></div>
+        <div class="brand-item"><img src="assests/montra.png" alt="Montra"></div>
+        <div class="brand-item"><img src="assests/trek.png" alt="Trek"></div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+    <div class="reveal">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">Our Products</h2>
+    <p class="section-desc">Browse by category and reach out on WhatsApp for pricing and availability.</p>
+    </div>
+
+    <!-- Products nav btns-->
+    <div class="cat-tabs reveal">
+    <button class="cat-tab active" onclick="showCat('toys')">🧸 Toys</button>
+    <button class="cat-tab" onclick="showCat('baby')">👶 Baby</button>
+    <button class="cat-tab" onclick="showCat('kid')">🚲 Kid</button>
+    <button class="cat-tab" onclick="showCat('teenage')">⚡ Teenage</button>
+    </div>
+
+    <!--toys-->
+    <div class="product-section visible" id="cat-toys">
+
+        <!--Electric Car-->
+        <div class="subsection-title">Electric Car</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/car1.webp" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Car</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Premium electric car for kids with remote control, music, and realistic LED headlights for the ultimate joyride.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/car 3.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Car</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Pink</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Give your little racer the ultimate joyride with this premium electric car for kids, with remote control access and realistic LED headlights.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/car2.webp" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Car</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Yellow</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Luxury ride-on car for kids featuring remote control, music system, and bright LED lights
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/car4.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Car</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">White</span>
+                    </div>
+                
+                    <p class="card-desc">
+                      Fun-filled kids’ electric ride-on with LED headlights, music, and remote control.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Electric Bike-->
+        <div class="subsection-title">Electric Bike</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/bike1.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Bike</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Premium electric bike for kids with remote control, music, and realistic LED headlights.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/bike2.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Bike</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Green/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Stylish ride-on bike for kids featuring music, LED lights, and parental remote control.
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/bike3.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Bike</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Yellow/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Luxury electric ride-on bike for kids with realistic lights, music system, and remote access.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/bike4.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Scooter</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Kids’ electric scooter with bright LED headlights, fun music, and smooth remote control riding.
+                </div>
+            </div>
+
+        </div>
+
+        <!--Electric Jeep-->
+        <div class="subsection-title">Electric Jeep</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/jeep1.webp" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Jeep</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Premium kids’ electric jeep with remote control, music, and realistic LED headlights.
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/jeep2.webp" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Jeep</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">White/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                      Stylish ride-on jeep for kids featuring LED lights, music system, and parental remote control.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/jeep3.jpg" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Jeep</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Adventure-ready electric jeep for kids with bright headlights, music, and smooth remote driving.
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/jeep4.webp" alt="Electric Ride-On Car">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Ride-On Jeep</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Red/Yellow</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Luxury kids’ electric jeep with realistic design, LED lighting, and built-in music features.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--baby-->
+    <div class="product-section" id="cat-baby">
+
+        <!--Walker-->
+        <div class="subsection-title">Walker</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/walker1.jpg" alt="Baby Walker">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Baby Walker</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Pink</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Comfortable baby walker designed with music, lights, and safety features for little ones.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/walker2.jpg" alt="Baby Walker">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Baby Walker</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Yellow</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Stylish baby walker with playful sounds, LED lights, and sturdy support.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/walker3.avif" alt="Baby Waker">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Baby Walker</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Green</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Fun baby walker featuring interactive music, bright lights, and smooth movement.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/walker4.webp" alt="Baby Walker">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Baby Walker</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Premium baby walker with music, lights, and a comfortable safe design.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Ride On Toys-->
+        <div class="subsection-title">Ride On</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/rideon1.webp" alt="Ride On Toys">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Ride On Toys</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Fun plastic ride-on toy for kids with smooth wheels and a comfortable design.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/rideon2.webp" alt="Ride On Toysr">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Ride On Toys</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Durable kids’ ride-on toy made from high-quality plastic for endless fun.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/rideon3.avif" alt="Ride On Toys">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Ride On Toys</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Stylish plastic ride-on toy for kids with easy steering and smooth riding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/rideon4.jpg" alt="Ride On Toys">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Ride On Toys</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Colorful ride-on toy for kids designed for safe, fun, and active play.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--kid-->
+    <div class="product-section" id="cat-kid">
+
+        <!--3 Wheeler-->
+        <div class="subsection-title">3 Wheeler</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/3wheel1.webp" alt="3 Wheel Cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">3 Wheel Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Pink</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Fun 3-wheel cycle for kids with a sturdy design and smooth riding experience.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/3wheel2.jpg" alt="3 Wheel Cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">3 Wheel Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Colorful tricycle for kids designed for comfort, safety, and endless fun.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/3wheel3.jpg" alt="3 Wheel Cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">3 Wheel Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Yellow</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Kids’ 3-wheel cycle with durable wheels, easy steering, and a comfortable seat.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/3wheel4.jpg" alt="3 Wheel Cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">3 Wheel Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue/Pink</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Stylish tricycle for kids built for safe riding, balance, and outdoor adventures.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--12'' cycles'-->
+        <div class="subsection-title">12 Inch Cycles</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/12in2.jpg" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">12" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Stylish kids’ cycle with a sturdy frame and smooth riding experience.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/12in4.avif" alt="Kids Cyclesr">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">12" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Fun and durable bicycle for kids designed for safe everyday adventures.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/12in3.webp" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">12" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Kids’ cycle with comfortable seating, strong wheels, and easy handling.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/12in1.avif" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">12" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Premium bicycle for kids built for balance, comfort, and outdoor fun.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--13in cycles-->
+        <div class="subsection-title">13 Inch Cycles</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/13in1.jpg" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">13" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Colorful kids’ cycle with sporty design and smooth performance.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/13in2.webp" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">13" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Strong and lightweight bicycle for kids perfect for learning and play.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/13in3.jpg" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">13" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Adventure-ready kids’ cycle with durable tires and comfortable grip.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/13in4.jpg" alt="Kids Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">13" Kids Cycle</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Red/Blue</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Trendy bicycle for kids designed for safe, fun, and confident riding.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--teenage-->
+    <div class="product-section" id="cat-teenage">
+
+        <!--Cycles-->
+        <div class="subsection-title">Standard Cycles</div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/normalcycle.jpg" alt="Normal Cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Normal Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Standard</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Durable and stylish cycle designed for smooth, comfortable, and everyday riding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/diskbrake.jpg" alt="disk brake cycle">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Disk Brake Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">High Control</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Stylish cycle with powerful disc brakes for smooth control, safety, and comfortable riding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/front shock cycle.jpg" alt="Front Shock Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Front Suspension Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Smooth Rides</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Front suspension cycle designed for smooth rides, better comfort, and easy handling on rough roads.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/gear cycles.jpg" alt="Gear Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Gear Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Multi-Speed</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Gear cycle designed for smooth shifting, comfortable riding, and better performance on every road.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Electric Bike-->
+        <div class="subsection-title">MTB & Hybrid Cycles </div>
+        <div class="product-grid">
+
+            <!--Cards-->
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/hybrid.jpg" alt="Hybrid Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Hybrid Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Road + Trail</span>
+                    </div>
+                
+                    <p class="card-desc">
+                       Hybrid cycles combine comfort, speed, and versatility for smooth riding on both city roads and rough paths.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/mtb.webp" alt="MTB">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">MTBs</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Mountain Terrain</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        MTB cycles are built for rough terrains with strong frames, better grip, and smooth off-road performance.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/electric cycle.jpg" alt="Electric Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Electric Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Battery</span>
+                        <span class="badge">Eco-Powered</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Electric cycles combine pedal power with battery assistance for smooth, effortless, and comfortable riding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-top">
+                <div class="card-icon">
+                    <img src="assests/fitnesss.avif" alt="Fitness Cycles">
+                </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-name">Fitness Cycles</div>
+                
+                    <div class="card-badges">
+                        <span class="badge">Cardio</span>
+                    </div>
+                
+                    <p class="card-desc">
+                        Fitness cycles are designed for comfort, endurance, and smooth everyday workouts.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    
+
+  
+  
+
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="reveal">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">The Popular Advantage</h2>
+  </div>
+    <div class="why-grid reveal">
+    <div class="why-card">
+      <div class="why-icon">🏪</div>
+      <div class="why-title">Wholesale & Retail</div>
+      <div class="why-body">We cater to both individual families and bulk buyers. Get the best deals at any quantity.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">⭐</div>
+      <div class="why-title">Trusted Since Years</div>
+      <div class="why-body">A long-standing name in Kottarakara with hundreds of happy customers and positive word-of-mouth.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🤝</div>
+      <div class="why-title">Excellent Service</div>
+      <div class="why-body">Our customers love our personal touch and after-sales support — just message us anytime on WhatsApp.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📦</div>
+      <div class="why-title">Wide Range</div>
+      <div class="why-body">From tiny walkers to teenage electric bikes — every stage of childhood is covered under one roof.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-card">Get In Touch</div>
+    <h2 class="section-title">Find Us</h2>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <p>We're located at Pulamon Junction, Kottarakara. Walk in any day during business hours or reach us on WhatsApp for quick assistance.</p>
+      <div><br></div>
+      <div class="contact-row">
+        <div class="ico">📍</div>
+        <div>Pulamon Junction, Kottarakara, Kerala 691531</div>
+      </div>
+      <div class="contact-row">
+        <div class="ico">📞</div>
+        <div><a href="tel:+919447590267">094475 90267</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="ico">🕐</div>
+        <div>Open daily · Closes 8:30 PM</div>
+      </div>
+    </div>
+    <a class="wa-big" href="https://wa.me/919447590267?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20products." target="_blank">
+      <div class="wa-icon">💬</div>
+      <div class="wa-text">Chat on WhatsApp</div>
+      <div class="wa-sub">Tap to enquire about any product · We reply fast!</div>
+    </a>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Popular Cycles</div>
+  <div class="copy">© 2026 Popular Cycles Kottarakara. All Rights Reserved.</div>
+  <a href="https://wa.me/919447590267" target="_blank" style="color: var(--wa); text-decoration: none; font-weight: 600; font-size: .85rem;">094475 90267</a>
+</footer>
+
+<!-- FLOATING WA -->
+<a class="float-wa" href="https://wa.me/919447590267?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20products." target="_blank" title="Chat on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+
+<script>
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  function showCat(catId) {
+    document.querySelectorAll('.product-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    
+    const target = document.getElementById('cat-' + catId);
+    if(target) target.classList.add('visible');
+    event.currentTarget.classList.add('active');
+  }
+
+  // Simple Reveal Logic
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('in');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
