@@ -473,20 +473,80 @@
   .product-section.visible { display: block; animation: fadeIn .4s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-  .subsection-title {
+  /* ── SUBSECTION ACCORDION CARDS ── */
+  .subsection-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .subsection-card {
+    background: #ffffff;
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 1.4rem 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    transition: all .25s ease;
+    user-select: none;
+  }
+
+  .subsection-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(249,133,19,.15);
+  }
+
+  .subsection-card.open {
+    background: var(--clr-dark-blue);
+    border-color: var(--clr-dark-blue);
+    color: #fff;
+    box-shadow: 0 8px 28px rgba(34,51,130,.25);
+  }
+
+  .subsection-card-label {
     font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--clr-dark-blue);
-    margin-bottom: 1.2rem;
-    margin-top: 2.5rem;
-    display: flex; align-items: center; gap: .75rem;
+    line-height: 1.3;
+    transition: color .25s;
   }
-  .subsection-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
+
+  .subsection-card.open .subsection-card-label {
+    color: #fff;
+  }
+
+  .subsection-card-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .subsection-card-arrow {
+    font-size: .75rem;
+    color: var(--accent);
+    transition: transform .3s ease, color .25s;
+    flex-shrink: 0;
+  }
+
+  .subsection-card.open .subsection-card-arrow {
+    transform: rotate(180deg);
+    color: rgba(255,255,255,.7);
+  }
+
+  .subsection-panel {
+    display: none;
+    animation: fadeIn .35s ease;
+    margin-bottom: 2.5rem;
+  }
+
+  .subsection-panel.open {
+    display: block;
   }
 
 /* ── UPDATED PRODUCT CARD (Image Style) ── */
@@ -730,6 +790,19 @@
     letter-spacing: 2px;
   }
 
+  /* ── CUSTOM SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #ffd4a8; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--clr-dark-blue);
+    border-radius: 99px;
+    border: 2px solid #ffd4a8;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Firefox */
+  * { scrollbar-width: thin; scrollbar-color: var(--clr-dark-blue) #ffd4a8; }
+
   /* ── FLOATING WA ── */
   .float-wa {
     position: fixed; bottom: 24px; right: 24px; z-index: 200;
@@ -740,7 +813,7 @@
     box-shadow: 0 6px 24px rgba(37,211,102,.45);
     text-decoration: none;
     color: #fff;
-    transition: transform .2s, box-shadow .2s;
+    transition: transform .2s, box-shadow .2s, bottom .3s ease;
     animation: floatPop .5s 1.2s both;
   }
   .float-wa:hover { transform: scale(1.1); box-shadow: 0 10px 36px rgba(37,211,102,.6); }
@@ -876,7 +949,7 @@
 
   <div class="hero-stats">
     <div>
-      <div class="stat-val">10+</div>
+      <div class="stat-val">35+</div>
       <div class="stat-lbl">Years Serving</div>
     </div>
     <div>
@@ -937,8 +1010,27 @@
     <!--toys-->
     <div class="product-section visible" id="cat-toys">
 
+        <!-- Subsection selector cards -->
+        <div class="subsection-cards-row">
+          <div class="subsection-card open" onclick="toggleSubsection('toys-car', this)">
+            <span class="subsection-card-icon">🚗</span>
+            <span class="subsection-card-label">Electric Car</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('toys-bike', this)">
+            <span class="subsection-card-icon">🏍️</span>
+            <span class="subsection-card-label">Electric Bike</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('toys-jeep', this)">
+            <span class="subsection-card-icon">🚙</span>
+            <span class="subsection-card-label">Electric Jeep</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+        </div>
+
         <!--Electric Car-->
-        <div class="subsection-title">Electric Car</div>
+        <div class="subsection-panel open" id="toys-car">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1027,9 +1119,10 @@
             </div>
 
         </div>
+        </div><!-- end toys-car panel -->
 
         <!--Electric Bike-->
-        <div class="subsection-title">Electric Bike</div>
+        <div class="subsection-panel" id="toys-bike">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1116,9 +1209,10 @@
             </div>
 
         </div>
+        </div><!-- end toys-bike panel -->
 
         <!--Electric Jeep-->
-        <div class="subsection-title">Electric Jeep</div>
+        <div class="subsection-panel" id="toys-jeep">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1204,14 +1298,29 @@
             </div>
 
         </div>
+        </div><!-- end toys-jeep panel -->
 
     </div>
 
     <!--baby-->
     <div class="product-section" id="cat-baby">
 
+        <!-- Subsection selector cards -->
+        <div class="subsection-cards-row">
+          <div class="subsection-card open" onclick="toggleSubsection('baby-walker', this)">
+            <span class="subsection-card-icon">🚼</span>
+            <span class="subsection-card-label">Walker</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('baby-rideon', this)">
+            <span class="subsection-card-icon">🛵</span>
+            <span class="subsection-card-label">Ride On</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+        </div>
+
         <!--Walker-->
-        <div class="subsection-title">Walker</div>
+        <div class="subsection-panel open" id="baby-walker">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1296,9 +1405,10 @@
             </div>
 
         </div>
+        </div><!-- end baby-walker panel -->
 
         <!--Ride On Toys-->
-        <div class="subsection-title">Ride On</div>
+        <div class="subsection-panel" id="baby-rideon">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1383,14 +1493,34 @@
             </div>
 
         </div>
+        </div><!-- end baby-rideon panel -->
 
     </div>
 
     <!--kid-->
     <div class="product-section" id="cat-kid">
 
+        <!-- Subsection selector cards -->
+        <div class="subsection-cards-row">
+          <div class="subsection-card open" onclick="toggleSubsection('kid-3wheel', this)">
+            <span class="subsection-card-icon">🛺</span>
+            <span class="subsection-card-label">3 Wheeler</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('kid-12in', this)">
+            <span class="subsection-card-icon">🚲</span>
+            <span class="subsection-card-label">12 Inch Cycles</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('kid-13in', this)">
+            <span class="subsection-card-icon">🚴</span>
+            <span class="subsection-card-label">13 Inch Cycles</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+        </div>
+
         <!--3 Wheeler-->
-        <div class="subsection-title">3 Wheeler</div>
+        <div class="subsection-panel open" id="kid-3wheel">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1475,9 +1605,10 @@
             </div>
 
         </div>
+        </div><!-- end kid-3wheel panel -->
 
         <!--12'' cycles'-->
-        <div class="subsection-title">12 Inch Cycles</div>
+        <div class="subsection-panel" id="kid-12in">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1562,9 +1693,10 @@
             </div>
 
         </div>
+        </div><!-- end kid-12in panel -->
 
         <!--13in cycles-->
-        <div class="subsection-title">13 Inch Cycles</div>
+        <div class="subsection-panel" id="kid-13in">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1649,14 +1781,29 @@
             </div>
 
         </div>
+        </div><!-- end kid-13in panel -->
 
     </div>
 
     <!--teenage-->
     <div class="product-section" id="cat-teenage">
 
+        <!-- Subsection selector cards -->
+        <div class="subsection-cards-row">
+          <div class="subsection-card open" onclick="toggleSubsection('teen-standard', this)">
+            <span class="subsection-card-icon">🚲</span>
+            <span class="subsection-card-label">Standard Cycles</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+          <div class="subsection-card" onclick="toggleSubsection('teen-mtb', this)">
+            <span class="subsection-card-icon">⛰️</span>
+            <span class="subsection-card-label">MTB &amp; Hybrid</span>
+            <span class="subsection-card-arrow">▼</span>
+          </div>
+        </div>
+
         <!--Cycles-->
-        <div class="subsection-title">Standard Cycles</div>
+        <div class="subsection-panel open" id="teen-standard">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1741,9 +1888,10 @@
             </div>
 
         </div>
+        </div><!-- end teen-standard panel -->
 
-        <!--Electric Bike-->
-        <div class="subsection-title">MTB & Hybrid Cycles </div>
+        <!--MTB & Hybrid-->
+        <div class="subsection-panel" id="teen-mtb">
         <div class="product-grid">
 
             <!--Cards-->
@@ -1829,11 +1977,9 @@
             </div>
 
         </div>
+        </div><!-- end teen-mtb panel -->
 
     </div>
-
-    
-    
 
   
   
@@ -1914,9 +2060,48 @@
 
 
 <script>
+  function toggleSubsection(panelId, cardEl) {
+    const panel = document.getElementById(panelId);
+    const isOpen = panel.classList.contains('open');
+
+    // Find all sibling subsection cards (within the same subsection-cards-row)
+    const row = cardEl.closest('.subsection-cards-row');
+    const allCards = row.querySelectorAll('.subsection-card');
+
+    // Close all panels that belong to this category
+    allCards.forEach(card => {
+      const sibId = card.getAttribute('onclick').match(/'([^']+)'/)[1];
+      const sibPanel = document.getElementById(sibId);
+      if (sibPanel) sibPanel.classList.remove('open');
+      card.classList.remove('open');
+    });
+
+    // If it wasn't open, open it now (toggle off means collapse — but we always open on click)
+    if (!isOpen) {
+      panel.classList.add('open');
+      cardEl.classList.add('open');
+    }
+  }
+
   function toggleNav() {
     document.getElementById('navLinks').classList.toggle('open');
   }
+
+  // Float WA — lift above footer when scrolled to bottom
+  const floatWa = document.querySelector('.float-wa');
+  function updateFloatWa() {
+    const footer = document.querySelector('footer');
+    const footerTop = footer.getBoundingClientRect().top;
+    const viewH = window.innerHeight;
+    if (footerTop < viewH) {
+      const overlap = viewH - footerTop;
+      floatWa.style.bottom = (24 + overlap) + 'px';
+    } else {
+      floatWa.style.bottom = '24px';
+    }
+  }
+  window.addEventListener('scroll', updateFloatWa, { passive: true });
+  updateFloatWa();
 
   function showCat(catId) {
     document.querySelectorAll('.product-section').forEach(s => s.classList.remove('visible'));
